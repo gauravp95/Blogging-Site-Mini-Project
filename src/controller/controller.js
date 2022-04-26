@@ -1,4 +1,5 @@
 const authorModel = require("../models/authorModel");
+const blogModel = require("../models/blogModel");
 
 const createAuthor = async function (req, res) {
   try {
@@ -10,7 +11,37 @@ const createAuthor = async function (req, res) {
   }
 };
 
+const createBlog = async function (req, res) {
+  try {
+    let data = req.body;
+    let author = req.authorId;
+    let validAuthor = await authorModel.find({_id:author});
+    if (!validAuthor) {
+        res.status(400).send({status: false, msg: "Not a valid authorId"})
+    }
+    let blog = await blogModel.create(data);
+    res.status(201).send({status: true, data: blog });
+  } catch (error) {
+    res.status(500).send({ status: false, msg: error.message});
+  }
+};
+
 module.exports.createAuthor = createAuthor;
+module.exports.createBlog = createBlog;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*Blogs
 {

@@ -4,6 +4,7 @@ const controller = require("../controller/controller")
 
 
 router.post("/authors", controller.createAuthor)
+router.post("/blogs", controller.createBlog)
 
 
 
