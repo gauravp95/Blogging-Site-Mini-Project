@@ -4,7 +4,9 @@ Uranium
 Repository for backend cohort - Uranium
 
 Blogging Site Mini Project Requirement
+
 Phase I
+
 Models
 Author Model
 { fname: { mandatory}, lname: {mandatory}, title: {mandatory, enum[Mr, Mrs, Miss]}, email: {mandatory, valid email, unique}, password: {mandatory} }
@@ -45,7 +47,9 @@ If the blog document doesn't exist then return an HTTP status of 404 with a body
 DELETE /blogs?queryParams
 Delete blog documents by category, authorid, tag name, subcategory name, unpublished
 If the blog document doesn't exist then return an HTTP status of 404 with a body like this
+
 Phase II
+
 Add authentication and authroisation feature
 POST /login
 Allow an author to login with their email and password. On a successful login attempt return a JWT token contatining the authorId
@@ -100,8 +104,8 @@ Note: Create a group database and use the same database in connection string by 
 
 
 
-MvD9HwLH72zL105K
-g-2-project-1
+Password of clusture - MvD9HwLH72zL105K
+Username of clusture - g-2-project-1
 
 
-mongodb+srv://g-2-project-1:MvD9HwLH72zL105K@cluster0.j1yrl.mongodb.net/myProject1-DB?retryWrites=true&w=majority
+Cluster Key - mongodb+srv://g-2-project-1:MvD9HwLH72zL105K@cluster0.j1yrl.mongodb.net/myProject1-DB?retryWrites=true&w=majority
