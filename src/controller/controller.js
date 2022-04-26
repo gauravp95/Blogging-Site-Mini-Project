@@ -1,3 +1,17 @@
+const authorModel = require("../models/authorModel");
+
+const createAuthor = async function (req, res) {
+  try {
+    let data = req.body;
+    let author = await authorModel.create(data);
+    res.status(200).send({ msg: author, status: true });
+  } catch (error) {
+    res.status(500).send({ msg: error.message, status: false });
+  }
+};
+
+module.exports.createAuthor = createAuthor;
+
 /*Blogs
 {
   "author_id":"664bfea3456eau"
@@ -37,5 +51,3 @@ const createBlog = async function (req, res) {
 }
 
 */
-
-
