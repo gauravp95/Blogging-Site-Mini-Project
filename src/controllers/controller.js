@@ -23,9 +23,6 @@ const createBlog = async function (req, res) {
     if(!request.author){
         res.send("Your request is wrong!!Send author id to check results...")
     }
-    else if(!request.publisher){
-        res.send("Your request is wrong!!Send publisher id to check results...")
-    }
     else if(!checkAuthor_id){
         res.send("No author present...")
     }
@@ -40,4 +37,5 @@ const createBlog = async function (req, res) {
 }
 
 */
+
 
