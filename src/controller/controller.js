@@ -1,5 +1,7 @@
 const authorModel = require("../models/authorModel");
 const blogModel = require("../models/blogModel");
+const moment = require("moment");
+const mongoose = require("mongoose")
 
 const createAuthor = async function (req, res) {
   try {
@@ -14,34 +16,25 @@ const createAuthor = async function (req, res) {
 const createBlog = async function (req, res) {
   try {
     let data = req.body;
-    let author = req.authorId;
-    let validAuthor = await authorModel.find({_id:author});
-    if (!validAuthor) {
-        res.status(400).send({status: false, msg: "Not a valid authorId"})
+    if (!mongoose.Types.ObjectId.isValid(data.authorId)) {
+      return res.status(400).send({ status: false, msg: "Invalid Author-Id" });
+    }
+    let authorId = await authorModel.findById(data.authorId);
+    if (!authorId) {
+      res.status(400).send({ status: false, msg: "Invalid Author-Id" });
+    }
+    if (data.isPublished == true) {
+      data.publishedAt = new Date().toISOString();
     }
     let blog = await blogModel.create(data);
-    res.status(201).send({status: true, data: blog });
+    res.status(201).send({ status: true, data: blog });
   } catch (error) {
-    res.status(500).send({ status: false, msg: error.message});
+    res.status(500).send({ status: false, msg: error.message });
   }
 };
 
 module.exports.createAuthor = createAuthor;
 module.exports.createBlog = createBlog;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*Blogs
 {
