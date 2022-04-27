@@ -5,6 +5,8 @@ const controller = require("../controller/controller")
 
 router.post("/authors", controller.createAuthor)
 router.post("/blogs", controller.createBlog)
+router.get("/blogs", controller.getBlogs)
+// router.put("/blogs/:blogId", controller.updatedBlogs)
 
 
 
