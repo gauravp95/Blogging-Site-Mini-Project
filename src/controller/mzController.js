@@ -40,7 +40,7 @@ const getBlogs = async function (req, res) {
             return res.status(400).send({ status: false, msg: "Invalid Author-Id" })
         }
         if (authorId) {
-            const blogData = await blogModel.find({ queryData, isDeleted: false, isPublished: true })
+            const blogData = await blogModel.find({...queryData, isDeleted: false, isPublished: true })
             if (blogData.length == 0) {
                 return res.status(404).send({ status: false, msg: "No Document Found" })
             }
