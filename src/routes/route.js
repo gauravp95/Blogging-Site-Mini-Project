@@ -8,8 +8,8 @@ router.post("/authors", authorController.createAuthor)
 router.post("/login", authorController.loginAuthor)
 router.post("/blogs", blogcontroller.createBlog)
 router.get("/blogs",auth.verifyJwt, blogcontroller.getBlogs)
-router.put("/blogs/:blogId",auth.verifyJwt, blogcontroller.updatedBlogs)
-router.delete("/blogs/:blogId",auth.verifyJwt, blogcontroller.DeleteBlog)
+router.put("/blogs/:blogId",auth.verifyJwt, auth.authorise ,blogcontroller.updatedBlogs)
+router.delete("/blogs/:blogId",auth.verifyJwt, auth.authorise ,blogcontroller.DeleteBlog)
 router.delete("/blogs",auth.verifyJwt, blogcontroller.deleteBlogByQuery)
 
 
