@@ -2,15 +2,7 @@ const authorModel = require("../models/authorModel");
 const blogModel = require("../models/blogModel");
 const mongoose = require("mongoose")
 
-const createAuthor = async function (req, res) {
-  try {
-    let data = req.body;
-    let author = await authorModel.create(data);
-    return res.status(201).send({ msg: author, status: true });
-  } catch (error) {
-    return res.status(500).send({ msg: error.message, status: false });
-  }
-};
+
 
 const createBlog = async function (req, res) {
   try {
@@ -177,7 +169,15 @@ const deleteBlogByQuery = async function (req, res) {
 }
 
 //===>
-module.exports.createAuthor = createAuthor;
+
+
+
+
+
+
+
+
+
 module.exports.createBlog = createBlog;
 module.exports.getBlogs = getBlogs;
 module.exports.updatedBlogs = updatedBlogs;
