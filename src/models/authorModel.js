@@ -3,11 +3,11 @@ const validator = require("validator")
 
 const authorModel = new mongoose.Schema(
   {
-    fname: { type: String, required: true },
-    lname: { type: String, required: true },
+    fname: { type: String, required: true },//"Ridhi"
+    lname: { type: String, required: true },//"Arora"
     title: { type: String, enum: ["Mr", "Mrs", "Miss"], required: true },
     email: { type: String, unique: true, validate:{
-      validator: validator.isEmail,
+      validator: validator.isEmail,//ridhi@gmail.co
       message: '{VALUE} is not a valid email',
       isAsync: false
     }},
