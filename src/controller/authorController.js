@@ -22,8 +22,7 @@ const loginAuthor = async function (req, res) {
                 status: false,
                 msg: "username or the password is not corerct",
             });
-
-       
+      
         let token = jwt.sign(
             {
                 authorId: author._id.toString(),
@@ -40,5 +39,4 @@ const loginAuthor = async function (req, res) {
 };
 
 
-module.exports.loginAuthor = loginAuthor;
-module.exports.createAuthor = createAuthor;
+module.exports= {loginAuthor,createAuthor}

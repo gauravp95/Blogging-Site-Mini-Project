@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const blogcontroller = require("../controller/blogController")
-const authorController=require("../controller/authorController")
-const {verifyJwt, authorise}  = require("../middleware/middleware")
+const {createBlog,getBlogs,updatedBlogs,deleteBlog,deleteBlogByQuery} = require("../controller/blogController")
+const {loginAuthor,createAuthor}=require("../controller/authorController")
+const {authentication, authorization}  = require("../middleware/middleware")
 
-router.post("/authors", authorController.createAuthor)
-router.post("/login", authorController.loginAuthor)
-router.post("/blogs", blogcontroller.createBlog)
-router.get("/blogs",verifyJwt, blogcontroller.getBlogs)
-router.put("/blogs/:blogId",auth.verifyJwt, auth.authorise ,blogcontroller.updatedBlogs)
-router.delete("/blogs/:blogId",auth.verifyJwt, auth.authorise ,blogcontroller.DeleteBlog)
-router.delete("/blogs",auth.verifyJwt, blogcontroller.deleteBlogByQuery)
+
+
+router.post("/authors", createAuthor)
+router.post("/login", loginAuthor)
+router.post("/blogs",authentication,createBlog)
+router.get("/blogs",authentication, getBlogs)
+router.put("/blogs/:blogId",authentication,authorization ,updatedBlogs)
+router.delete("/blogs/:blogId",authentication,authorization ,deleteBlog)
+router.delete("/blogs",authentication, deleteBlogByQuery)
+
 
 
 

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const blogModel = require("../models/blogModel");
 const authorModel = require("../models/blogModel")
-const verifyJwt = async function (req,res,next) {
+const authentication = async function (req,res,next) {
     try {
         let token = req.headers["x-api-key"];
         if (!token) {
@@ -11,19 +11,21 @@ const verifyJwt = async function (req,res,next) {
         if (!decodeToken) {
             return res.status(400).send({status: false, msg: "Token is not valid"})
         }
-        // if (decodeToken) {
-        //    let authorIdToken = decodeToken.authorId;
+        if (decodeToken) {
+           let authorIdToken = decodeToken.authorId;
         //    if (authorId == authorIdToken) {
         //        next()
         //    } 
-        // }
+        }
+    
+        req.authorIdToken=decodeToken.authorId
         next()
     } catch (error) {
         return res.status(500).send({status:false, msg:error.message})
     }
 }
 
-const authorise = async function(req, res, next) {
+const authorization = async function(req, res, next) {
         //Comapre the logged in user's id and the id in request
     try {
         //take token from login
@@ -52,5 +54,5 @@ const authorise = async function(req, res, next) {
       }
 }
 
-module.exports = {verifyJwt, authorise}
+module.exports = {authentication, authorization}
 // module.exports.authorise=authorise;
