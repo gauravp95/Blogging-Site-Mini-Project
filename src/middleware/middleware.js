@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-
+const blogModel = require("../models/blogModel");
+const authorModel = require("../models/blogModel")
 const verifyJwt = async function (req,res,next) {
     try {
         let token = req.headers["x-api-key"];
@@ -22,16 +23,28 @@ const verifyJwt = async function (req,res,next) {
     }
 }
 
-const authorise = function(req, res, next) {
-    // comapre the logged in user's id and the id in request
+const authorise = async function(req, res, next) {
+        //Comapre the logged in user's id and the id in request
     try {
+        //take token from login
         let token = req.headers["x-api-key"];
+        //verify token - check if author is validate or not
         let decodedToken = jwt.verify(token, "uranium")
-        let userToBeModified = req.params.authorId
+        //take blogId from params
+        let userToBeModified = req.params.blogId
+        //finds authorId of that blogId - { authorId: new ObjectId("626839e8f5ea47102cf73d7f") }
+        let data = await blogModel.findById(userToBeModified).select({authorId:1,_id:0})
+        //we have to take only authorId so convert it to string and here result as : 626839e8f5ea47102cf73d7f
+        let authorId = data.authorId.toString();
+        //check validation
         let userLoggedIn = decodedToken.authorId
-        if (userToBeModified != userLoggedIn) {
-          return res.send({ status: false, msg: 'User logged is not allowed to modify the requested users data' })
+        console.log(userLoggedIn)
+        //check whether blogId has take authorId which is loggedIn 
+        if (authorId != userLoggedIn) {
+            //If not this shows error message 
+          return res.status(403).send({ status: false, msg: 'Author logged is not allowed to modify the requested other authors data' })
         } else {
+        
           next();
         }
       } catch (err) {

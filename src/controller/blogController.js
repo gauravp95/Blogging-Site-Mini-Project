@@ -1,7 +1,7 @@
 const authorModel = require("../models/authorModel");
 const blogModel = require("../models/blogModel");
 const mongoose = require("mongoose")
-
+const moment = require("moment");
 
 
 const createBlog = async function (req, res) {
@@ -15,7 +15,7 @@ const createBlog = async function (req, res) {
       return res.status(400).send({ status: false, msg: "Invalid Author-Id" });
     }
     if (data.isPublished == true) {
-      data.publishedAt = new Date().toISOString();
+      data.publishedAt = moment.Format("dd-mm-yyyy , hh-mm-ss")
     }
     let blog = await blogModel.create(data);
     return res.status(201).send({ status: true, data: blog });
@@ -86,7 +86,7 @@ const updatedBlogs = async function (req, res) {
       return res.status(404).send({ status: false, msg: "Data not found" })
     }
     console.log(blog.subcategory)
-    blogData.publishedAt = new Date().toISOString()
+    blogData.publishedAt = moment.Format("dd-mm-yyyy , hh-mm-ss")
 
     let updatedBlog = await blogModel.findByIdAndUpdate(
       { _id: blogId },
@@ -110,7 +110,7 @@ const DeleteBlog = async function (req, res) {
     if(!blogIdToBeDeleted){
       return res.status(400).send({ status: false, msg: "Blog Id is not entered" })
     }
-    let validBlogId = await blogModel.findOne({ _id: deleteId });
+    let validBlogId = await blogModel.findOne({ _id: blogIdToBeDeleted });
     if (!validBlogId) {
       return res.status(400).send({ status: false, msg: "Blog Id is invalid" })
     }
@@ -118,14 +118,14 @@ const DeleteBlog = async function (req, res) {
     if (!isDeletedStatus) {
       return res.status(400).send({ status: false, msg: "Blog is ALready deleted" })
     }
-    let deletedDate = new Date().toISOString()
+    let deletedDate = moment.Format("dd-mm-yyyy , hh-mm-ss")
     console.log(deletedDate)
 
-    let data = await blogModel.findByIdAndUpdate({ _id: deleteId }, { isDeleted: true, deletedAt: deletedDate }, { new: true })
+    let data = await blogModel.findByIdAndUpdate({ _id: blogIdToBeDeleted }, { isDeleted: true, deletedAt: deletedDate }, { new: true })
 
     return res.status(200).send({ status: true, msg: data })
   } catch (error) {
-    return res.status(400).send({ status: false, msg: error.message })
+    return res.status(500).send({ status:false, msg: error.message })
   }
 }
 
@@ -154,7 +154,7 @@ const deleteBlogByQuery = async function (req, res) {
       obj.subcategory = queryData.subcategory
     }
     
-    let deletedDate = new Date().toISOString()
+    let deletedDate = new Da
     let updateDeleteStatus = await blogModel.updateMany(obj, { isDeleted:false, deletedAt: deletedDate } , { new: true })
     // console.log(updateDeleteStatus)
     //It will check that we got some match or not
