@@ -45,25 +45,31 @@ const getBlogs = async function (req, res) {
     if (!(queryData.authorId || queryData.category || queryData.tags || queryData.subcategory)) {
       return res.status(400).send({ status: false, msg: "Invalid Filters" })
     }
-    // if(!mongoose.Types.ObjectId.isValid(queryData.authorId)) {
-    //     return res.status(400).send({status: false , msg:"Invalid Author-Id"})
-    //  }
-
-    //  let authorId = await authorModel.findById(queryData.authorId)
-
-    //  if(!authorId) {
-    //     return res.status(400).send({status: false , msg:"Invalid Author-Id"})   
-    // }
-
-    // if(authorId){
-    const blogData = await blogModel.find(queryData)
-
-
+     //creating obj to filterout only authorized key
+     let obj = {}
+     //checking that key has some value or not
+     if (!(queryData.authorId == undefined)) {
+       obj.authorId = queryData.authorId
+     }
+     if (!(queryData.category == undefined)) {
+       obj.category = queryData.category
+     }
+     if (!(queryData.tags == undefined)) {
+       obj.tags = queryData.tags
+     }
+     if (!(queryData.subcategory == undefined)) {
+       obj.subcategory = queryData.subcategory
+     }
+     //adding key as per the requirement of problem that isDeleted =false & isPublished =true
+     queryData.isDeleted = false;
+    queryData.isPublished = true;
+    
+    const blogData = await blogModel.find(obj)
     if (blogData.length == 0) {
       return res.status(404).send({ status: false, msg: 'No Document Found' })
     }
     return res.status(200).send({ status: true, Data: blogData })
-    // }
+    
 
   }
   catch (err) {
