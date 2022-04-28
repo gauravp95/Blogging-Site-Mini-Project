@@ -141,7 +141,8 @@ const deleteBlogByQuery = async function (req, res) {
     //creating obj to filterout only authorized key
     let obj = {}
     //checking that key has some value or not
-    if (!(queryData.authorId == undefined)) {
+
+    if ((queryData.authorId != undefined)) {
       obj.authorId = queryData.authorId
     }
     if (!(queryData.category == undefined)) {
@@ -154,6 +155,7 @@ const deleteBlogByQuery = async function (req, res) {
       obj.subcategory = queryData.subcategory
     }
     
+    
     let deletedDate = new Date().toISOString()
     let updateDeleteStatus = await blogModel.updateMany(obj, { isDeleted:false, deletedAt: deletedDate } , { new: true })
     // console.log(updateDeleteStatus)
@@ -164,7 +166,7 @@ const deleteBlogByQuery = async function (req, res) {
     return res.status(200).send({ status: true, data:updateDeleteStatus });
 
   } catch (error) {
-    return res.status(400).send({ status: false, msg: error.message });
+    return res.status(500).send({ status: false, msg: error.message });
   }
 }
 

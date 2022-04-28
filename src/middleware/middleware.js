@@ -27,10 +27,10 @@ const authorise = function(req, res, next) {
     try {
         let token = req.headers["x-api-key"];
         let decodedToken = jwt.verify(token, "uranium")
-        let userToBeModified = req.params.authorId
-        let userLoggedIn = decodedToken.authorId
-        if (userToBeModified != userLoggedIn) {
-          return res.send({ status: false, msg: 'User logged is not allowed to modify the requested users data' })
+        let authorId = req.params.authorId
+        let tokenAuthorId = decodedToken.authorId
+        if (authorId != tokenAuthorId) {
+          return res.send({ status: false, msg: 'Author logged is not allowed to modify the requested author data' })
         } else {
           next();
         }
@@ -39,5 +39,5 @@ const authorise = function(req, res, next) {
       }
 }
 
-module.exports.verifyJwt = verifyJwt;
-module.exports.authorise=authorise;
+module.exports = {verifyJwt, authorise}
+// module.exports.authorise=authorise;
