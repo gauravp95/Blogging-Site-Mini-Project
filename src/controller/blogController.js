@@ -15,7 +15,7 @@ const createBlog = async function (req, res) {
       return res.status(404).send({ status: false, msg: "Invalid Author-Id" });
     }
     if (data.isPublished == true) {
-      data.publishedAt =  moment().format("dd-mm-yyyy , hh-mm-ss")
+      data.publishedAt = moment().format("DD-MM-YYYY, hh:mm a")
     }
     let blog = await blogModel.create(data);
     return res.status(201).send({ status: true, data: blog });
@@ -37,31 +37,31 @@ const getBlogs = async function (req, res) {
     if (!(queryData.authorId || queryData.category || queryData.tags || queryData.subcategory)) {
       return res.status(400).send({ status: false, msg: "Invalid Filters" })
     }
-     
-     let obj = {}                            //creating obj to filterout only authorized key
-     
-     if (!(queryData.authorId == undefined)) {
-       obj.authorId = queryData.authorId
-     }                                       //checking that key has some value or not
-     if (!(queryData.category == undefined)) {
-       obj.category = queryData.category
-     }
-     if (!(queryData.tags == undefined)) {
-       obj.tags = queryData.tags
-     }
-     if (!(queryData.subcategory == undefined)) {
-       obj.subcategory = queryData.subcategory
-     }
-     //adding key as per the requirement of problem that isDeleted =false & isPublished =true
-     queryData.isDeleted = false;
+
+    let obj = {}                            //creating obj to filterout only authorized key
+
+    if (!(queryData.authorId == undefined)) {
+      obj.authorId = queryData.authorId
+    }                                       //checking that key has some value or not
+    if (!(queryData.category == undefined)) {
+      obj.category = queryData.category
+    }
+    if (!(queryData.tags == undefined)) {
+      obj.tags = queryData.tags
+    }
+    if (!(queryData.subcategory == undefined)) {
+      obj.subcategory = queryData.subcategory
+    }
+    //adding key as per the requirement of problem that isDeleted =false & isPublished =true
+    queryData.isDeleted = false;
     queryData.isPublished = true;
-    
+
     const blogData = await blogModel.find(obj)
     if (blogData.length == 0) {
       return res.status(404).send({ status: false, msg: 'No Document Found' })
     }
     return res.status(200).send({ status: true, Data: blogData })
-    
+
 
   }
   catch (err) {
@@ -86,7 +86,7 @@ const updatedBlogs = async function (req, res) {
       return res.status(404).send({ status: false, msg: "Data not found" })
     }
     console.log(blog.subcategory)
-    blogData.publishedAt =  moment().format("dd-mm-yyyy , hh-mm-ss")
+    blogData.publishedAt = moment().format("DD-MM-YYYY, hh:mm a")
 
     let updatedBlog = await blogModel.findByIdAndUpdate(
       { _id: blogId },
@@ -107,7 +107,7 @@ const updatedBlogs = async function (req, res) {
 const deleteBlog = async function (req, res) {
   try {
     let blogIdToBeDeleted = req.params.blogId
-    if(!blogIdToBeDeleted){
+    if (!blogIdToBeDeleted) {
       return res.status(400).send({ status: false, msg: "Blog Id is not entered" })
     }
     let validBlogId = await blogModel.findOne({ _id: deleteId });
@@ -118,10 +118,9 @@ const deleteBlog = async function (req, res) {
     if (!isDeletedStatus) {
       return res.status(404).send({ status: false, msg: "Blog is ALready deleted" })
     }
-    let deletedDate = 
-    console.log(deletedDate)
+    let deletedDate = moment().format("DD-MM-YYYY, hh:mm a")
 
-    let data = await blogModel.findByIdAndUpdate({ _id: deleteId }, { isDeleted: true, deletedAt: deletedDate }, { new: true })
+    let data = await blogModel.findByIdAndUpdate({ _id: blogIdToBeDeleted }, { isDeleted: true, deletedAt: deletedDate }, { new: true })
 
     return res.status(200).send({ status: true, msg: data })
   } catch (error) {
@@ -138,9 +137,9 @@ const deleteBlogByQuery = async function (req, res) {
     if (!(queryData.category || queryData.authorId || queryData.tags || queryData.subcategory)) {
       return res.status(400).send({ status: false, msg: "Invalid Request...." })
     }
-    
+
     let obj = {}                              //creating obj to filterout only authorized key
-    
+
     if (!(queryData.authorId == undefined)) {
       obj.authorId = queryData.authorId
     }                                          //checking that key has some value or not
@@ -153,15 +152,15 @@ const deleteBlogByQuery = async function (req, res) {
     if (!(queryData.subcategory == undefined)) {
       obj.subcategory = queryData.subcategory
     }
-    
-    let deletedDate =  moment().format("dd-mm-yyyy , hh-mm-ss")
-    let updateDeleteStatus = await blogModel.updateMany(obj, { isDeleted:false, deletedAt: deletedDate } , { new: true })
+
+    let deletedDate = moment().format("DD-MM-YYYY, hh:mm a")
+    let updateDeleteStatus = await blogModel.updateMany(obj, { isDeleted: true, deletedAt: deletedDate }, { new: true })
     // console.log(updateDeleteStatus)
-    
-    if(updateDeleteStatus.matchedCount==0){
+
+    if (updateDeleteStatus.matchedCount == 0) {
       return res.status(404).send({ status: false, msg: "No Match Found" })
     }                                                                             //It will check that we got some match or not
-    return res.status(200).send({ status: true, data:updateDeleteStatus });
+    return res.status(200).send({ status: true, data: updateDeleteStatus });
 
   } catch (error) {
     return res.status(400).send({ status: false, msg: error.message });
@@ -170,7 +169,7 @@ const deleteBlogByQuery = async function (req, res) {
 
 //===>
 
-module.exports = {createBlog,getBlogs,updatedBlogs,deleteBlog,deleteBlogByQuery};
+module.exports = { createBlog, getBlogs, updatedBlogs, deleteBlog, deleteBlogByQuery };
 
 
 // module.exports.getBlogs = getBlogs;
