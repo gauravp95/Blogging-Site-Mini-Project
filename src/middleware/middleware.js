@@ -15,7 +15,7 @@ const authentication = async function (req,res,next) {
             return res.status(400).send({status: false, msg: "Token is not valid"})
         }
         if (decodeToken) {
-           let authorIdToken = decodeToken.authorId;
+           var authorIdToken = decodeToken.authorId;
         
         }
     
@@ -45,8 +45,10 @@ const authorization = async function(req, res, next) {
           return res.status(400).send({status: false, msg: "Please entered Blog-Id"})
         }
         //finds authorId of that blogId - { authorId: new ObjectId("626839e8f5ea47102cf73d7f") }
+        console.log(blogId)
         let blogIdDB = await blogModel.findById(blogId)
-        if(blogIdDB){
+        console.log(blogIdDB)
+        if(!blogIdDB){
           return res.status(404).send({status: false, msg: "Blog-Id is not found"})
         }
         //we have to take only authorId so convert it to string and here result as : 626839e8f5ea47102cf73d7f
