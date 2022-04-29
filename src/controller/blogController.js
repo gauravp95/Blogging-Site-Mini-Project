@@ -41,16 +41,16 @@ const getBlogs = async function (req, res) {
 
     let obj = {}                            //creating obj to filterout only authorized key
 
-    if (!(queryData.authorId == undefined)) {
+    if (queryData.authorId != undefined) {
       obj.authorId = queryData.authorId
     }                                       //checking that key has some value or not
-    if (!(queryData.category == undefined)) {
+    if (queryData.category != undefined) {
       obj.category = queryData.category
     }
-    if (!(queryData.tags == undefined)) {
+    if (queryData.tags != undefined) {
       obj.tags = queryData.tags
     }
-    if (!(queryData.subcategory == undefined)) {
+    if (queryData.subcategory != undefined) {
       obj.subcategory = queryData.subcategory
     }
     //adding key as per the requirement of problem that isDeleted =false & isPublished =true
@@ -141,16 +141,16 @@ const deleteBlogByQuery = async function (req, res) {
 
     let obj = {}                              //creating obj to filterout only authorized key
 
-    if (!(queryData.authorId == undefined)) {
+    if (queryData.authorId != undefined) {
       obj.authorId = queryData.authorId
     }                                          //checking that key has some value or not
-    if (!(queryData.category == undefined)) {
+    if (queryData.category != undefined) {
       obj.category = queryData.category
     }
-    if (!(queryData.tags == undefined)) {
+    if (queryData.tags != undefined) {
       obj.tags = queryData.tags
     }
-    if (!(queryData.subcategory == undefined)) {
+    if (queryData.subcategory != undefined) {
       obj.subcategory = queryData.subcategory
     }
 
