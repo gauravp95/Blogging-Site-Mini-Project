@@ -16,7 +16,8 @@ const createBlog = async function (req, res) {
       return res.status(404).send({ status: false, msg: "Invalid Author-Id" });
     }
     if (data.isPublished == true) {
-      data.publishedAt =  moment().format("dd-mm-yyyy , hh-mm-ss")
+      data.publishedAt = moment().format("DD-MM-YYYY, hh:mm a")
+
     }
     let blog = await blogModel.create(data);
     return res.status(201).send({ status: true, data: blog });
@@ -87,7 +88,7 @@ const updatedBlogs = async function (req, res) {
       return res.status(404).send({ status: false, msg: "Data not found" })
     }
     console.log(blog.subcategory)
-    blogData.publishedAt =  moment().format("dd-mm-yyyy , hh-mm-ss")
+    blogData.publishedAt =   moment().format("DD-MM-YYYY, hh:mm a")
 
     let updatedBlog = await blogModel.findByIdAndUpdate(
       { _id: blogId },
@@ -119,7 +120,7 @@ const deleteBlog = async function (req, res) {
     if (!isDeletedStatus) {
       return res.status(404).send({ status: false, msg: "Blog is ALready deleted" })
     }
-    let deletedDate = moment().format("dd-mm-yyyy , hh-mm-ss") 
+    let deletedDate = moment().format("DD-MM-YYYY, hh:mm a")
     
 
     let data = await blogModel.findByIdAndUpdate({ _id: blogIdToBeDeleted }, { isDeleted: true, deletedAt: deletedDate }, { new: true })
@@ -155,8 +156,8 @@ const deleteBlogByQuery = async function (req, res) {
       obj.subcategory = queryData.subcategory
     }
     
-    let deletedDate =  moment().format("dd-mm-yyyy , hh-mm-ss")
-    let updateDeleteStatus = await blogModel.updateMany(obj, { isDeleted:false, deletedAt: deletedDate } , { new: true })
+    let deletedDate =  moment().format("DD-MM-YYYY, hh:mm a")
+    let updateDeleteStatus = await blogModel.updateMany(obj, { isDeleted:true, deletedAt: deletedDate } , { new: true })
     // console.log(updateDeleteStatus)
     
     if(updateDeleteStatus.matchedCount==0){
