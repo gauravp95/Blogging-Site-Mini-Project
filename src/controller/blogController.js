@@ -1,6 +1,7 @@
 const authorModel = require("../models/authorModel");
 const blogModel = require("../models/blogModel");
 const mongoose = require("mongoose")
+const moment = require('moment')
 
 
 
@@ -110,7 +111,7 @@ const deleteBlog = async function (req, res) {
     if (!blogIdToBeDeleted) {
       return res.status(400).send({ status: false, msg: "Blog Id is not entered" })
     }
-    let validBlogId = await blogModel.findOne({ _id: deleteId });
+    let validBlogId = await blogModel.findOne({ _id: blogIdToBeDeleted });
     if (!validBlogId) {
       return res.status(400).send({ status: false, msg: "Blog Id is invalid" })
     }
