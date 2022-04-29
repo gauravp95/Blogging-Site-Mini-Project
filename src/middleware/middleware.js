@@ -16,12 +16,10 @@ const authentication = async function (req,res,next) {
         }
         if (decodeToken) {
            let authorIdToken = decodeToken.authorId;
-        //    if (authorId == authorIdToken) {
-        //        next()
-        //    } 
+        
         }
     
-        req.authorIdToken=decodeToken.authorId
+        req.authorIdToken=authorIdToken
         next()
     } catch (error) {
         return res.status(500).send({status:false, msg:error.message})
@@ -29,25 +27,36 @@ const authentication = async function (req,res,next) {
 }
 
 const authorization = async function(req, res, next) {
-        //Comapre the logged in user's id and the id in request
+        //Comapre the logged in author's id and the id in jwt
     try {
-        //take token from login
+        //take token from header
         let token = req.headers["x-api-key"];
+        if (!token) {
+          return res.status(400).send({status: false, msg: "Token not Found"});
+      }
         //verify token - check if author is validate or not
-        let decodedToken = jwt.verify(token, "uranium")
+        let decodedToken = jwt.verify(token, "uranium");
+        if (!decodedToken) {
+          return res.status(400).send({status: false, msg: "Token is not valid"})
+      }
         //take blogId from params
-        let userToBeModified = req.params.blogId
+        let blogId = req.params.blogId
+        if(!blogId){
+          return res.status(400).send({status: false, msg: "Please entered Blog-Id"})
+        }
         //finds authorId of that blogId - { authorId: new ObjectId("626839e8f5ea47102cf73d7f") }
-        let data = await blogModel.findById(userToBeModified).select({authorId:1,_id:0})
+        let blogIdDB = await blogModel.findById(blogId)
+        if(blogIdDB){
+          return res.status(404).send({status: false, msg: "Blog-Id is not found"})
+        }
         //we have to take only authorId so convert it to string and here result as : 626839e8f5ea47102cf73d7f
-        let authorId = data.authorId.toString();
+        let authorId = blogIdDB.authorId.toString();
         //check validation
-        let userLoggedIn = decodedToken.authorId
-        console.log(userLoggedIn)
+        let tokenAuthorId = decodedToken.authorId
         //check whether blogId has take authorId which is loggedIn 
-        if (authorId != userLoggedIn) {
+        if (authorId != tokenAuthorId) {
             //If not this shows error message 
-          return res.status(403).send({ status: false, msg: 'Author logged is not allowed to modify the requested other authors data' })
+          return res.status(403).send({ status: false, msg: 'Author logged token is not matched' })
         } else {
         
           next();
@@ -58,4 +67,3 @@ const authorization = async function(req, res, next) {
 }
 
 module.exports = {authentication, authorization}
-// module.exports.authorise=authorise;
