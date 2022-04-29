@@ -5,6 +5,7 @@ const moment =require("moment")
 
 
 
+
 const createBlog = async function (req, res) {
   try {
     let data = req.body;
@@ -42,16 +43,16 @@ const getBlogs = async function (req, res) {
      
      let obj = {}                            //creating obj to filterout only authorized key
      
-     if (!(queryData.authorId == undefined)) {
+     if (queryData.authorId != undefined) {
        obj.authorId = queryData.authorId
      }                                       
-     if (!(queryData.category == undefined)) {
+     if (queryData.category != undefined) {
        obj.category = queryData.category
      }
-     if (!(queryData.tags == undefined)) {
+     if (queryData.tags != undefined) {
        obj.tags = queryData.tags
      }
-     if (!(queryData.subcategory == undefined)) {
+     if (queryData.subcategory != undefined) {
        obj.subcategory = queryData.subcategory
      }
      //adding key as per the requirement of problem that isDeleted =false & isPublished =true
@@ -137,28 +138,33 @@ const deleteBlogByQuery = async function (req, res) {
   try {
     let queryData = req.query
     let tokenAuthorId = req.authorIdToken
+    let queryAuthorId = queryData.authorId
     //To check that we get atleast 1 authorized key in query param
     if (!(queryData.category || queryData.authorId || queryData.tags || queryData.subcategory)) {
       return res.status(400).send({ status: false, msg: "Invalid Request...." })
     }
-    
+    if(queryAuthorId){
+      if(tokenAuthorId != queryAuthorId){
+        return res.status(400).send({ status: false, msg: "Token is not match with authorId" })
+      }
+    }
     let obj = {}                              //creating obj to filterout only authorized key
       
       obj.authorId = tokenAuthorId
-                                              //checking that key has some value or not
-    if (!(queryData.category == undefined)) {
+     //checking that key has some value or not
+    if (queryData.category != undefined) {
       obj.category = queryData.category
     }
-    if (!(queryData.tags == undefined)) {
+    if (queryData.tags != undefined) {
       obj.tags = queryData.tags
     }
-    if (!(queryData.subcategory == undefined)) {
+    if (queryData.subcategory != undefined) {
       obj.subcategory = queryData.subcategory
     }
-    
+    // console.log(obj)
     let deletedDate =  moment().format("DD-MM-YYYY, hh:mm a")
     let updateDeleteStatus = await blogModel.updateMany(obj, { isDeleted:true, deletedAt: deletedDate } , { new: true })
-    // console.log(updateDeleteStatus)
+    //  console.log(updateDeleteStatus)
     
     if(updateDeleteStatus.matchedCount==0){
       return res.status(404).send({ status: false, msg: "No Match Found" })
