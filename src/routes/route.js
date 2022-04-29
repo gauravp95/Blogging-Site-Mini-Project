@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {createAuthor,createBlog,getBlogs,updatedBlogs,DeleteBlog,deleteBlogByQuery} = require("../controller/controller")
-
+const {createBlog,getBlogs,updatedBlogs,DeleteBlog,deleteBlogByQuery} = require("../controller/blogController")
+const{createAuthor} =require("../controller/authorController")
 
 router.post("/authors", createAuthor)
 router.post("/blogs", createBlog)

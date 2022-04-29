@@ -10,11 +10,11 @@ const blogModel = new mongoose.Schema(
     category: { type: String, required: true },
     subcategory: [String],
     isPublished: { type: Boolean, default: false },
-    publishedAt: String, // if published is true publishedAt will have a date 2021-09-17T04:25:07.803Z
+    publishedAt: String, 
     isDeleted: { type: Boolean, default: false },
-    deletedAt: String, // if deleted is true deletedAt will have a date 2021-09-17T04:25:07.803Z,
+    deletedAt: String,
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Blog", blogModel);
+module.exports = mongoose.model("blog", blogModel);
