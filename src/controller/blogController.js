@@ -34,12 +34,6 @@ const getBlogs = async function (req, res) {
   try {
 
     let queryData = req.query
-    queryData.isDeleted = false;
-    queryData.isPublished = true;
-    console.log(req.query)
-    if (!(queryData.authorId || queryData.category || queryData.tags || queryData.subcategory || queryData.isDeleted || queryData.isPublished)) {
-      return res.status(400).send({ status: false, msg: "Invalid Filters" })
-    }
      
      let obj = {}                            //creating obj to filterout only authorized key
      
@@ -56,7 +50,8 @@ const getBlogs = async function (req, res) {
        obj.subcategory = queryData.subcategory
      }
      //adding key as per the requirement of problem that isDeleted =false & isPublished =true
-    
+    obj.isDeleted =false;
+    obj.isPublished=true;
     
     const blogData = await blogModel.find(obj)
     if (blogData.length == 0) {
