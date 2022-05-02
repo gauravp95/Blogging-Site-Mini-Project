@@ -34,11 +34,11 @@ const getBlogs = async function (req, res) {
   try {
 
     let queryData = req.query
-    queryData.isDeleted = false;
-    queryData.isPublished = true;
-
-    if (!(queryData.authorId || queryData.category || queryData.tags || queryData.subcategory)) {
-      return res.status(400).send({ status: false, msg: "Invalid Filters" })
+    if(queryData.isDeleted == true){
+      return res.status(400).send({ status: false, msg: 'Blog is deleted' })
+    }
+    if(queryData.isPublished == false){
+      return res.status(400).send({ status: false, msg: 'Blog is not Published' })
     }
      
      let obj = {}                            //creating obj to filterout only authorized key

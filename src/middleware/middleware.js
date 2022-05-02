@@ -12,7 +12,7 @@ const authentication = async function (req,res,next) {
         }
         let decodeToken = await jwt.verify(token,"uranium");
         if (!decodeToken) {
-            return res.status(400).send({status: false, msg: "Token is not valid"})
+            return res.status(401).send({status: false, msg: "Token is not valid"})
         }
         if (decodeToken) {
            var authorIdToken = decodeToken.authorId;
