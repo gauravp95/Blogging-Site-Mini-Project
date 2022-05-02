@@ -141,7 +141,7 @@ const deleteBlogByQuery = async function (req, res) {
     let tokenAuthorId = req.authorIdToken
     let queryAuthorId = queryData.authorId
     //To check that we get atleast 1 authorized key in query param
-    if (!(queryData.category || queryData.authorId || queryData.tags || queryData.subcategory)) {
+    if (!(queryData.category || queryData.authorId || queryData.tags || queryData.subcategory || queryData.isPublished)) {
       return res.status(400).send({ status: false, msg: "Invalid Request...." })
     }
     if(queryAuthorId){
@@ -161,6 +161,9 @@ const deleteBlogByQuery = async function (req, res) {
     }
     if (queryData.subcategory != undefined) {
       obj.subcategory = queryData.subcategory
+    }
+    if (queryData.isPublished != undefined) {
+      obj.isPublished = queryData.isPublished
     }
     // console.log(obj)
     let deletedDate =  moment().format("DD-MM-YYYY, hh:mm a")
