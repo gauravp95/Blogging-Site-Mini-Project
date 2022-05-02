@@ -34,6 +34,14 @@ const getBlogs = async function (req, res) {
   try {
 
     let queryData = req.query
+    
+    if(queryData.isDeleted == "true"){
+      return res.status(400).send({ status: false, msg: 'Blog is deleted' })
+    }
+    if(queryData.isPublished == "false"){
+      return res.status(400).send({ status: false, msg: 'Blog is not Published' })
+    }
+     
      
      let obj = {}                            //creating obj to filterout only authorized key
      
@@ -71,9 +79,7 @@ const getBlogs = async function (req, res) {
 const updatedBlogs = async function (req, res) {
   try {
     let blog = req.body
-    if (!(blog.title || blog.body || blog.tags || blog.subcategory || blog.isPublished)) {
-      return res.status(400).send({ status: false, msg: "Invalid Filters" })
-    }
+    
     let blogId = req.params.blogId
     if (!mongoose.Types.ObjectId.isValid(blogId)) {
       return res.status(400).send({ status: false, msg: "Invalid Blog-Id" })
@@ -87,7 +93,7 @@ const updatedBlogs = async function (req, res) {
 
     let updatedBlog = await blogModel.findByIdAndUpdate(
       { _id: blogId },
-      { $addToSet: { tags: blog.tags, subcategory: blog.subcategory }, $set: { title: blog.title, body: blog.body } },
+      { $addToSet: { tags: blog.tags, subcategory: blog.subcategory }, $set: { title: blog.title, body: blog.body, isPublished:blog.isPublished } },
       { new: true }
 
     )

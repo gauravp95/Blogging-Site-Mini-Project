@@ -1,5 +1,6 @@
 const authorModel = require("../models/authorModel");
 const jwt = require("jsonwebtoken");
+const blogModel = require("../models/blogModel");
 const createAuthor = async function (req, res) {
     try {
         let data = req.body;
@@ -29,6 +30,7 @@ const loginAuthor = async function (req, res) {
            },
             "uranium"
         );
+       
         res.setHeader("x-api-key", token);
         res.status(200).send({ status: true, data: token });
     }
