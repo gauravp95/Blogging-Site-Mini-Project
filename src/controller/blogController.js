@@ -36,8 +36,8 @@ const getBlogs = async function (req, res) {
     let queryData = req.query
     queryData.isDeleted = false;
     queryData.isPublished = true;
-
-    if (!(queryData.authorId || queryData.category || queryData.tags || queryData.subcategory)) {
+    console.log(req.query)
+    if (!(queryData.authorId || queryData.category || queryData.tags || queryData.subcategory || queryData.isDeleted || queryData.isPublished)) {
       return res.status(400).send({ status: false, msg: "Invalid Filters" })
     }
      
@@ -56,8 +56,7 @@ const getBlogs = async function (req, res) {
        obj.subcategory = queryData.subcategory
      }
      //adding key as per the requirement of problem that isDeleted =false & isPublished =true
-     queryData.isDeleted = false;
-    queryData.isPublished = true;
+    
     
     const blogData = await blogModel.find(obj)
     if (blogData.length == 0) {
