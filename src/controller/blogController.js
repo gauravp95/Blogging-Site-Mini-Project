@@ -127,7 +127,8 @@ const deleteBlog = async function (req, res) {
     let data = await blogModel.findByIdAndUpdate({ _id: blogIdToBeDeleted }, { isDeleted: true, deletedAt: deletedDate }, { new: true })
 
     return res.status(200).send({ status: true, msg: data })
-  } catch (error) {
+  }
+   catch (error) {
     return res.status(400).send({ status: false, msg: error.message })
   }
 }
