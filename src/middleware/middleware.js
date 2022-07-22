@@ -55,7 +55,7 @@ const authorization = async function(req, res, next) {
         let authorId = blogIdDB.authorId.toString();
         //check validation
         let tokenAuthorId = decodedToken.authorId
-        //check whether blogId has take authorId which is loggedIn 
+        //check whether blogId has            take authorId which is loggedIn 
         if (authorId != tokenAuthorId) {
             //If not this shows error message 
           return res.status(403).send({ status: false, msg: 'Author logged token is not matched' })
